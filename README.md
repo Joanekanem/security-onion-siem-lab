@@ -24,57 +24,13 @@ The deployment covered:
 
 ## Architecture
 
-```text
-                         ┌─────────────────────┐
-                         │ Bitdefender         │
-                         │ GravityZone         │
-                         └─────────┬───────────┘
-                                   │
-                              Event Push
-                                HTTPS
-                                   │
-                                   ▼
-┌──────────────┐            ┌────────────────────────┐
-│              │ TCP Syslog │                        │
-│   FortiGate  ├───────────►│    Security Onion      │
-│              │            │                        │
-└──────────────┘            │  Fleet / Elastic Agent │
-                            │  Elasticsearch         │
-                            │  Kibana / SOC          │
-                            │  Suricata / Zeek       │
-                            └───────────┬────────────┘
-                                        │
-                                        │ HTTPS
-                                        ▼
-                              ┌─────────────────────┐
-                              │   Reverse Tunnel    │
-                              └──────────┬──────────┘
-                                         │
-                                         ▼
-                                   Remote Analyst
-```
+![Security Onion SIEM Architecture](images/security-onion-architecture.png)
+
+The architecture integrates multiple security data sources into a centralized
+Security Onion deployment for ingestion, analysis, investigation, and monitoring.
 
 The important lesson from this architecture was that SIEM integration is not only a logging problem. It is also a networking, firewall, transport, parsing, and validation problem.
 
-A useful way to think about every integration is:
-
-```text
-Source Configuration
-        ↓
-Network Reachability
-        ↓
-Security Onion Firewall
-        ↓
-Listening Service
-        ↓
-Fleet / Elastic Agent
-        ↓
-Integration / Parser
-        ↓
-Elasticsearch Data Stream
-        ↓
-Kibana / SOC
-```
 
 ---
 
